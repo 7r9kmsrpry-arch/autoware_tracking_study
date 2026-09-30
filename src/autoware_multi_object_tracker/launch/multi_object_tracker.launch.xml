@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Launch引数を定義。起動時に:=で上書き可能。
+  例)input/detection01/channel:=lidar_centerpoint
+-->
 <launch>
-  <arg name="input/detection01/objects" default="input/objects01"/>
+  <arg name="input/detection01/objects" default="input/objects01"/>  
   <arg name="input/detection01/channel" default="none"/>
   <arg name="input/detection02/objects" default="input/objects02"/>
   <arg name="input/detection02/channel" default="none"/>
@@ -25,10 +30,15 @@
   <arg name="input/detection12/objects" default="input/objects12"/>
   <arg name="input/detection12/channel" default="none"/>
   <arg name="output/objects" default="objects"/>
+  <!-- YAMLファイルからROS parameterをまとめて読み込む -->
   <arg name="tracker_setting_path" default="$(find-pkg-share autoware_multi_object_tracker)/config/multi_object_tracker_node.param.yaml"/>
   <arg name="data_association_matrix_path" default="$(find-pkg-share autoware_multi_object_tracker)/config/data_association_matrix.param.yaml"/>
   <arg name="input_channels_path" default="$(find-pkg-share autoware_multi_object_tracker)/config/input_channels.param.yaml"/>
 
+  <!--
+    Launch引数の値をROS parameterとしてノードに渡す。
+    $(var ...)で上で定義したlaunch引数の値を取得。
+  -->
   <node pkg="autoware_multi_object_tracker" exec="multi_object_tracker_node" name="multi_object_tracker" output="both">
     <param name="input/detection01/objects" value="$(var input/detection01/objects)"/>
     <param name="input/detection01/channel" value="$(var input/detection01/channel)"/>
